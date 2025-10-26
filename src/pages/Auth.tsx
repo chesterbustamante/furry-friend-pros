@@ -12,6 +12,11 @@ import { z } from "zod";
 
 const emailSchema = z.string().email("Invalid email address");
 const passwordSchema = z.string().min(6, "Password must be at least 6 characters");
+const displayNameSchema = z.string()
+  .trim()
+  .min(1, "Display name is required")
+  .max(100, "Display name must be less than 100 characters")
+  .regex(/^[a-zA-Z0-9\s._-]+$/, "Display name contains invalid characters");
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -33,8 +38,8 @@ const Auth = () => {
     try {
       emailSchema.parse(email);
       passwordSchema.parse(password);
-      if (requireDisplayName && !displayName.trim()) {
-        throw new Error("Display name is required");
+      if (requireDisplayName) {
+        displayNameSchema.parse(displayName);
       }
       return true;
     } catch (error) {
