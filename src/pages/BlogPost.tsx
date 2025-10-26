@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Calendar, Clock, User, ExternalLink } from "lucide-react";
 import dogTraining from "@/assets/dog-training.jpg";
+import DOMPurify from "dompurify";
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -79,7 +80,12 @@ const BlogPost = () => {
         {/* Content */}
         <div 
           className="prose prose-lg max-w-none mb-12"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ 
+            __html: DOMPurify.sanitize(post.content, {
+              ALLOWED_TAGS: ['p', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'br'],
+              ALLOWED_ATTR: ['href', 'target', 'rel']
+            })
+          }}
         />
 
         {/* Affiliate Products Section */}
