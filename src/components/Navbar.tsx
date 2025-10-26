@@ -1,10 +1,38 @@
-import { Link } from "react-router-dom";
-import { PawPrint, Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { PawPrint, Menu, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { User } from "@supabase/supabase-js";
+import { toast } from "@/hooks/use-toast";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast({
+      title: "Signed Out",
+      description: "You've been successfully signed out.",
+    });
+    navigate("/");
+  };
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -12,7 +40,7 @@ const Navbar = () => {
     { to: "/blog", label: "Blog" },
     { to: "/about", label: "About" },
     { to: "/contact", label: "Contact" },
-    { to: "/dashboard", label: "Dashboard" },
+    { to: "/demo", label: "Demo Dashboard" },
   ];
 
   return (
@@ -35,9 +63,23 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Button size="sm" className="bg-primary text-primary-foreground hover:opacity-90">
-              Join PawMail
-            </Button>
+            {user ? (
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={handleSignOut}
+                className="gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign Out
+              </Button>
+            ) : (
+              <Link to="/auth">
+                <Button size="sm" className="bg-primary text-primary-foreground hover:opacity-90">
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -63,9 +105,23 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Button size="sm" className="w-full bg-primary text-primary-foreground">
-              Join PawMail
-            </Button>
+            {user ? (
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={handleSignOut}
+                className="w-full gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign Out
+              </Button>
+            ) : (
+              <Link to="/auth">
+                <Button size="sm" className="w-full bg-primary text-primary-foreground">
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
         )}
       </div>
