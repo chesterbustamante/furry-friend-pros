@@ -23,9 +23,7 @@ const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRouteProps)
         
         // Fetch admin status when session changes
         if (session?.user) {
-          setTimeout(() => {
-            checkAdminStatus(session.user.id);
-          }, 0);
+          checkAdminStatus(session.user.id);
         } else {
           setIsAdmin(false);
           setLoading(false);

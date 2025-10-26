@@ -3,18 +3,33 @@ import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const newsletterSchema = z.object({
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+});
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    
+    try {
+      newsletterSchema.parse({ email });
       toast({
         title: "Welcome to PawMail! 🐾",
         description: "You'll receive top pet deals and expert tips monthly.",
       });
       setEmail("");
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Invalid Email",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+      }
     }
   };
 
