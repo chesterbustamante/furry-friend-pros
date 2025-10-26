@@ -1,73 +1,197 @@
-# Welcome to your Lovable project
+# 🐾 Pawfect Companion - Pet Website Template
 
-## Project info
+A beautiful, fully responsive pet website template built with React, TypeScript, and Tailwind CSS. Perfect for pet blogs, pet product affiliates, or pet service businesses.
 
-**URL**: https://lovable.dev/projects/0043ac61-da66-4ced-b0c8-712f531dc075
+## 🎨 How to Edit Text & Images
 
-## How can I edit this code?
+### Editing Text Content
 
-There are several ways of editing your application.
+All page content is located in the `src/pages/` directory:
 
-**Use Lovable**
+- **Homepage**: `src/pages/Index.tsx`
+- **Shop Page**: `src/pages/Shop.tsx`
+- **Blog**: `src/pages/Blog.tsx` and `src/pages/BlogPost.tsx`
+- **About**: `src/pages/About.tsx`
+- **Contact**: `src/pages/Contact.tsx`
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/0043ac61-da66-4ced-b0c8-712f531dc075) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+Simply open these files and edit the text within the JSX markup. For example:
+```tsx
+<h1>Your New Heading</h1>
+<p>Your new paragraph text here</p>
 ```
 
-**Edit a file directly in GitHub**
+### Changing Images
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. **Add your images** to the `src/assets/` folder
+2. **Import the image** at the top of your component:
+   ```tsx
+   import myImage from "@/assets/my-image.jpg";
+   ```
+3. **Use the image** in your JSX:
+   ```tsx
+   <img src={myImage} alt="Description" />
+   ```
 
-**Use GitHub Codespaces**
+**Current Images:**
+- `hero-pets.jpg` - Homepage hero image
+- `dog-training.jpg` - Dog training blog post
+- `cat-grooming.jpg` - Cat grooming blog post
+- `pet-products.jpg` - Pet products image
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🎨 How to Change Colors & Fonts
 
-## What technologies are used for this project?
+### Changing Colors
 
-This project is built with:
+All colors are defined using CSS variables in `src/index.css`. Edit the HSL values to match your brand:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```css
+:root {
+  --primary: 270 80% 65%;        /* Main brand color */
+  --secondary: 340 90% 70%;      /* Accent color */
+  --accent: 210 100% 50%;        /* Highlight color */
+  --background: 0 0% 100%;       /* Page background */
+  --foreground: 224 71% 4%;      /* Text color */
+}
+```
 
-## How can I deploy this project?
+**Quick Color Changes:**
+- **Primary (Purple)**: Change `--primary` value
+- **Pink Accent**: Change `--secondary` value
+- **Blue Links**: Change `--accent` value
 
-Simply open [Lovable](https://lovable.dev/projects/0043ac61-da66-4ced-b0c8-712f531dc075) and click on Share -> Publish.
+### Changing Fonts
 
-## Can I connect a custom domain to my Lovable project?
+Fonts are configured in `tailwind.config.ts`:
 
-Yes, you can!
+1. **Add Google Font** to `index.html`:
+   ```html
+   <link href="https://fonts.googleapis.com/css2?family=Your+Font:wght@400;700&display=swap" rel="stylesheet">
+   ```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+2. **Update** `tailwind.config.ts`:
+   ```ts
+   fontFamily: {
+     heading: ["Your Font", "serif"],
+     body: ["Your Font", "sans-serif"],
+   }
+   ```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+**Current Fonts:**
+- **Headings**: Playfair Display (serif)
+- **Body Text**: Inter (sans-serif)
+
+## 📊 How to Connect Analytics
+
+### Google Analytics
+
+1. **Get your GA4 Measurement ID** from Google Analytics
+2. **Add to** `index.html` in the `<head>` section:
+   ```html
+   <!-- Google Analytics -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+   <script>
+     window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+     gtag('config', 'G-XXXXXXXXXX');
+   </script>
+   ```
+
+### Other Analytics Platforms
+
+- **Plausible**: Add script tag to `index.html`
+- **Fathom**: Add script tag to `index.html`
+- **Microsoft Clarity**: Add script tag to `index.html`
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ installed
+- npm or yarn package manager
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+### Development
+- Development server runs at `http://localhost:5173`
+- Changes auto-reload in the browser
+- TypeScript compilation errors show in terminal
+
+## 🗂️ Project Structure
+
+```
+/src
+  ├─ /assets          # Images and static files
+  ├─ /components      # Reusable UI components
+  ├─ /pages           # Page components (routes)
+  ├─ /integrations    # Backend integrations
+  ├─ /hooks           # Custom React hooks
+  ├─ index.css        # Global styles & color system
+  └─ main.tsx         # App entry point
+```
+
+## 🛠️ Key Features
+
+- ✅ Fully responsive design (mobile, tablet, desktop)
+- ✅ SEO optimized with meta tags
+- ✅ Blog system with categories
+- ✅ Contact form with validation
+- ✅ Newsletter signup
+- ✅ Product showcase with affiliate links
+- ✅ Social media sharing
+- ✅ Dark/light mode support
+- ✅ User authentication & admin dashboard
+- ✅ Backend powered by Lovable Cloud
+
+## 📝 Customization Tips
+
+### Adding New Pages
+
+1. Create new component in `src/pages/YourPage.tsx`
+2. Add route in `src/App.tsx`:
+   ```tsx
+   <Route path="/your-page" element={<YourPage />} />
+   ```
+3. Add navigation link in `src/components/Navbar.tsx`
+
+### Editing Navigation
+
+Edit links in `src/components/Navbar.tsx`:
+```tsx
+<Link to="/your-page">Your Page</Link>
+```
+
+### Changing Logo/Brand Name
+
+Search and replace "Pawfect Companion" across the project with your brand name.
+
+## 🔗 Important Links
+
+- **Lovable Documentation**: [https://docs.lovable.dev/](https://docs.lovable.dev/)
+- **Tailwind CSS**: [https://tailwindcss.com/docs](https://tailwindcss.com/docs)
+- **React Documentation**: [https://react.dev/](https://react.dev/)
+
+## 📧 Support
+
+For questions about this template:
+- Review the code comments in each file
+- Check Lovable documentation
+- Visit Lovable Discord community
+
+## 📄 License
+
+This template is provided as-is for your use. Customize freely!
+
+---
+
+**Built with ❤️ using [Lovable](https://lovable.dev)**
