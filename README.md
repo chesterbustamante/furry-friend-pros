@@ -2,6 +2,23 @@
 
 A beautiful, fully responsive pet website template built with React, TypeScript, and Tailwind CSS. Perfect for pet blogs, pet product affiliates, or pet service businesses.
 
+## 🚀 One-Click Deploy
+
+Deploy your own copy instantly to Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/YOUR_REPO_NAME&env=VITE_SUPABASE_URL,VITE_SUPABASE_PUBLISHABLE_KEY,VITE_SUPABASE_PROJECT_ID&envDescription=Supabase%20credentials%20for%20your%20backend&envLink=https://supabase.com/docs/guides/getting-started)
+
+**Before deploying**, you'll need:
+1. A free [Supabase](https://supabase.com) account
+2. Create a new Supabase project
+3. Get your project URL, anon key, and project ID from Supabase dashboard
+
+The deploy button will:
+- ✅ Clone this repository to your account
+- ✅ Install all dependencies automatically
+- ✅ Prompt you for your Supabase credentials
+- ✅ Deploy your site live in minutes
+
 ## 🎨 How to Edit Text & Images
 
 ### Editing Text Content
