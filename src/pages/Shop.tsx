@@ -1,26 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShoppingBag } from "lucide-react";
-import petProducts from "@/assets/pet-products.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+
+interface Product {
+  id: string;
+  title: string;
+  price: string;
+  rating: number;
+  reviews: number;
+  image_url: string;
+  category: string;
+  affiliate: boolean;
+}
 
 const Shop = () => {
   const [activeCategory, setActiveCategory] = useState("all");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
-  const products = [
-    { title: "Premium Automatic Pet Feeder with Camera", price: "$89.99", rating: 5, reviews: 1247, image: petProducts, category: "Smart Tech" },
-    { title: "Orthopedic Pet Bed with Memory Foam", price: "$64.99", rating: 5, reviews: 892, image: petProducts, category: "Comfort" },
-    { title: "Interactive Puzzle Treat Dispenser", price: "$24.99", rating: 4, reviews: 2145, image: petProducts, category: "Toys" },
-    { title: "Professional Pet Grooming Kit", price: "$39.99", rating: 5, reviews: 1563, image: petProducts, category: "Grooming" },
-    { title: "GPS Pet Tracker Collar", price: "$49.99", rating: 4, reviews: 987, image: petProducts, category: "Smart Tech" },
-    { title: "Premium Dog Training Clicker Set", price: "$14.99", rating: 5, reviews: 3421, image: petProducts, category: "Training" },
-    { title: "Elevated Ceramic Pet Bowl Set", price: "$34.99", rating: 4, reviews: 756, image: petProducts, category: "Feeding" },
-    { title: "Natural Organic Pet Treats Bundle", price: "$29.99", rating: 5, reviews: 2890, image: petProducts, category: "Food" },
-    { title: "Portable Pet Water Bottle", price: "$19.99", rating: 4, reviews: 1432, image: petProducts, category: "Travel" },
-  ];
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setProducts(data || []);
+    } catch (error: any) {
+      toast({
+        title: "Error loading products",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -58,43 +86,122 @@ const Shop = () => {
           </div>
 
           <TabsContent value="all">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.map((product, index) => (
-                <ProductCard key={index} {...product} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center py-20">
+                <p className="text-muted-foreground">Loading products...</p>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="text-muted-foreground">No products available yet. Check back soon!</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {products.map((product) => (
+                  <ProductCard 
+                    key={product.id} 
+                    title={product.title}
+                    price={product.price}
+                    rating={product.rating}
+                    reviews={product.reviews}
+                    image={product.image_url}
+                    category={product.category}
+                    affiliate={product.affiliate}
+                  />
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="smart">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.filter(p => p.category === "Smart Tech").map((product, index) => (
-                <ProductCard key={index} {...product} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center py-20">
+                <p className="text-muted-foreground">Loading products...</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {products.filter(p => p.category.toLowerCase().includes("smart") || p.category.toLowerCase().includes("tech")).map((product) => (
+                  <ProductCard 
+                    key={product.id} 
+                    title={product.title}
+                    price={product.price}
+                    rating={product.rating}
+                    reviews={product.reviews}
+                    image={product.image_url}
+                    category={product.category}
+                    affiliate={product.affiliate}
+                  />
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="toys">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.filter(p => p.category === "Toys").map((product, index) => (
-                <ProductCard key={index} {...product} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center py-20">
+                <p className="text-muted-foreground">Loading products...</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {products.filter(p => p.category.toLowerCase().includes("toy")).map((product) => (
+                  <ProductCard 
+                    key={product.id} 
+                    title={product.title}
+                    price={product.price}
+                    rating={product.rating}
+                    reviews={product.reviews}
+                    image={product.image_url}
+                    category={product.category}
+                    affiliate={product.affiliate}
+                  />
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="grooming">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.filter(p => p.category === "Grooming").map((product, index) => (
-                <ProductCard key={index} {...product} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center py-20">
+                <p className="text-muted-foreground">Loading products...</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {products.filter(p => p.category.toLowerCase().includes("groom")).map((product) => (
+                  <ProductCard 
+                    key={product.id} 
+                    title={product.title}
+                    price={product.price}
+                    rating={product.rating}
+                    reviews={product.reviews}
+                    image={product.image_url}
+                    category={product.category}
+                    affiliate={product.affiliate}
+                  />
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="food">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.filter(p => p.category === "Food").map((product, index) => (
-                <ProductCard key={index} {...product} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center py-20">
+                <p className="text-muted-foreground">Loading products...</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {products.filter(p => p.category.toLowerCase().includes("food") || p.category.toLowerCase().includes("treat")).map((product) => (
+                  <ProductCard 
+                    key={product.id} 
+                    title={product.title}
+                    price={product.price}
+                    rating={product.rating}
+                    reviews={product.reviews}
+                    image={product.image_url}
+                    category={product.category}
+                    affiliate={product.affiliate}
+                  />
+                ))}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
 

@@ -1,6 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ProductManagement from "@/components/ProductManagement";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
 import { TrendingUp, Eye, MousePointer, DollarSign } from "lucide-react";
 
@@ -35,12 +37,19 @@ const Dashboard = () => {
       
       <div className="container mx-auto px-4 py-12">
         <div className="mb-8">
-          <h1 className="font-heading text-4xl font-bold mb-2">Analytics Dashboard</h1>
-          <p className="text-muted-foreground">Track your site performance and affiliate earnings</p>
+          <h1 className="font-heading text-4xl font-bold mb-2">Dashboard</h1>
+          <p className="text-muted-foreground">Manage your site and products</p>
         </div>
 
+        <Tabs defaultValue="analytics" className="w-full mb-8">
+          <TabsList>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="products">Products</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="analytics" className="space-y-8 mt-6">
         {/* Stats Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <Card key={index}>
               <CardContent className="p-6">
@@ -59,7 +68,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid lg:grid-cols-2 gap-8">
           {/* Traffic Chart */}
           <Card>
             <CardHeader>
@@ -128,6 +137,12 @@ const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
+          </TabsContent>
+
+          <TabsContent value="products" className="mt-6">
+            <ProductManagement />
+          </TabsContent>
+        </Tabs>
       </div>
 
       <Footer />

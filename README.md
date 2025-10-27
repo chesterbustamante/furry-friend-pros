@@ -19,6 +19,22 @@ The deploy button will:
 - ✅ Prompt you for your Supabase credentials
 - ✅ Deploy your site live in minutes
 
+## 🛍️ Managing Your Shop Products
+
+Once deployed, you can manage your shop products through the admin dashboard:
+
+1. **Login**: Go to `/auth` and login with your credentials (first user becomes admin automatically)
+2. **Access Dashboard**: Navigate to `/dashboard` 
+3. **Manage Products**: Click on the "Products" tab
+4. **Add Products**: 
+   - Click "Add Product" button
+   - Fill in product details (title, price, rating, reviews, image URL, category)
+   - Toggle affiliate status if needed
+   - Click "Add Product" to save
+5. **Edit/Delete**: Use the action buttons next to each product
+
+**Product Categories**: Smart Tech, Toys, Grooming, Food & Treats, etc.
+
 ## 🎨 How to Edit Text & Images
 
 ### Editing Text Content
